@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -56,6 +57,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  int _selectedIndex = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -68,6 +70,16 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void changeSelectedTab(int value) {
+    setState(() {
+      _selectedIndex = value;
+      
+      if(kDebugMode){
+        print('Selected index: $value');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -77,6 +89,16 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard_sharp), label: 'Dashboard'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.check_circle_outline), label: 'Attendance')
+        ],
+        onTap: changeSelectedTab,
+        currentIndex: _selectedIndex,
+      ),
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
