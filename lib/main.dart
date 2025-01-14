@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harmony_hub/profile_view.dart';
+import 'package:harmony_hub/profile_card.dart';
+import 'package:harmony_hub/session_card.dart';
 import 'package:harmony_hub/session_view.dart';
-import 'package:harmony_hub/styles/styles.dart';
 
 void main() {
   runApp(ProviderScope(child: const MyApp()));
@@ -82,78 +82,13 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              ProfileView(
+              ProfileCard(
                 credentials: _credentials,
                 onPrimaryAction: doSomething,
                 primaryActionText: _credentials == null ? 'Log in' : 'Log out',
               ),
               SessionView(),
-              SizedBox(
-                  width: double.infinity,
-                  child: Card(
-                      color: context.colors.scheme.surface,
-                      child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Practice Session',
-                                    style: kListItemSubtitleStyle.copyWith(
-                                      color: context.colors.scheme.onSurface,
-                                      fontSize: context
-                                          .textStyles.titleMedium.fontSize,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                      'Start a session to track time and attendance',
-                                      style: kListItemSubtitleStyle.copyWith(
-                                        color: context
-                                            .colors.scheme.onSurfaceVariant,
-                                        fontSize: context
-                                            .textStyles.bodyMedium.fontSize,
-                                      )),
-                                ],
-                              ),
-                              SizedBox(height: 16.0),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                spacing: 8.0,
-                                children: [
-                                  OutlinedButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        'Past Sessions',
-                                        style:
-                                            kListItemButtonLabelStyle.copyWith(
-                                          color: context.colors.scheme.primary,
-                                          fontSize: context
-                                              .textStyles.labelLarge.fontSize,
-                                        ),
-                                      )),
-                                  FilledButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        'Start Session',
-                                        style:
-                                            kListItemButtonLabelStyle.copyWith(
-                                          color: context
-                                              .colors.scheme.onInverseSurface,
-                                          fontSize: context
-                                              .textStyles.labelLarge.fontSize,
-                                        ),
-                                      ))
-                                ],
-                              )
-                            ],
-                          )))),
+              SessionCard(),
             ],
           ),
         ),

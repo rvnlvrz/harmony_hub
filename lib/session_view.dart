@@ -1,30 +1,30 @@
 import 'dart:async';
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harmony_hub/session_state.dart';
 import 'package:harmony_hub/styles/styles.dart';
 import 'package:intl/intl.dart';
 
-class SessionView extends StatefulWidget {
+class SessionView extends ConsumerStatefulWidget {
   const SessionView({
     super.key,
   });
 
   @override
-  State<SessionView> createState() => _SessionViewState();
+  ConsumerState<SessionView> createState() => _SessionViewState();
 }
 
-class _SessionViewState extends State<SessionView> {
+class _SessionViewState extends ConsumerState<SessionView> {
   late Timer _timer;
-  late DateTime _startTime;
   Duration _elapsedTime = Duration.zero;
 
   @override
   void initState() {
     super.initState();
-    _startTime = DateTime.now();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        _elapsedTime = DateTime.now().difference(_startTime);
+        _elapsedTime = ref.read(sessionStateNotifierProvider).elapsedTime;
       });
     });
   }
@@ -37,8 +37,14 @@ class _SessionViewState extends State<SessionView> {
 
   @override
   Widget build(BuildContext context) {
-    String formattedElapsedTime = _formatDuration(_elapsedTime);
-    String formattedStartTime = DateFormat.jm().format(_startTime);
+    final sessionState = ref.watch(sessionStateNotifierProvider);
+    if (sessionState.status == SessionStatus.commenced) {
+      _elapsedTime = _elapsedTime +
+          DateTime.now()
+              .difference(sessionState.resumeTime ?? sessionState.startTime);
+    }
+    final formattedElapsedTime = _formatDuration(_elapsedTime);
+    final formattedStartTime = DateFormat.jm().format(sessionState.startTime);
 
     return SizedBox(
         width: double.infinity,
