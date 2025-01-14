@@ -100,4 +100,4 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
 lint_staged:
-  'lib/**.dart': dart format -l 80 && dart analyze --fatal-infos --fatal-warnings
+  'lib/**.dart': dart format -l 80 && dart analyze --fatal-infos --fatal-warnings && dart run custom_lint
