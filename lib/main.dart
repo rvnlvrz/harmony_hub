@@ -2,12 +2,13 @@ import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:auth0_flutter/auth0_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/profile_view.dart';
 import 'package:harmony_hub/session_view.dart';
 import 'package:harmony_hub/styles/styles.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
