@@ -92,11 +92,11 @@ class SessionCard extends ConsumerWidget {
       case SessionStatus.ready:
         return 'Start Session';
       case SessionStatus.commenced:
-        return 'Pause Session';
+        return 'Stop Session';
       case SessionStatus.paused:
         return 'Resume Session';
       case SessionStatus.ended:
-        return 'End Session';
+        return 'Start Session';
     }
   }
 }

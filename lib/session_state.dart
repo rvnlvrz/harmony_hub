@@ -27,7 +27,10 @@ class SessionStateNotifier extends StateNotifier<SessionState> {
     state = state.copyWith(
         startTime: DateTime.now(),
         elapsedTime: Duration.zero,
-        status: SessionStatus.commenced);
+        status: SessionStatus.commenced,
+        pauseTime: null,
+        resumeTime: null,
+        endTime: null);
   }
 
   void pauseSession() {
@@ -39,7 +42,12 @@ class SessionStateNotifier extends StateNotifier<SessionState> {
 
   void endSession() {
     // Implement end logic
-    updateElapsedTime();
+    if (state.status != SessionStatus.paused) {
+      pauseSession();
+    }
+
+    state =
+        state.copyWith(status: SessionStatus.ended, endTime: DateTime.now());
   }
 
   void updateElapsedTime() {

@@ -69,6 +69,24 @@ class _SessionViewState extends ConsumerState<SessionView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        Text(
+                          sessionState.status.name,
+                          style: kListItemSubtitleStyle.copyWith(
+                            color: (sessionState.status ==
+                                        SessionStatus.commenced ||
+                                    sessionState.status == SessionStatus.ready)
+                                ? Colors.green
+                                : sessionState.status == SessionStatus.paused
+                                    ? Colors.orange
+                                    : Colors.red,
+                            fontSize: context.textStyles.bodyMedium.fontSize,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
                         Text('Time Started: $formattedStartTime',
                             style: kListItemSubtitleStyle.copyWith(
                               color: context.colors.scheme.onSurfaceVariant,
@@ -86,6 +104,42 @@ class _SessionViewState extends ConsumerState<SessionView> {
                             )),
                       ],
                     ),
+                    SizedBox(height: 16.0),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        spacing: 8.0,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              if (sessionState.status == SessionStatus.paused) {
+                                ref
+                                    .read(sessionStateNotifierProvider.notifier)
+                                    .resumeSession();
+                              } else if (sessionState.status ==
+                                  SessionStatus.commenced) {
+                                ref
+                                    .read(sessionStateNotifierProvider.notifier)
+                                    .pauseSession();
+                              } else {
+                                ref
+                                    .read(sessionStateNotifierProvider.notifier)
+                                    .startSession();
+                              }
+                            },
+                            child: Text(
+                                sessionState.status == SessionStatus.commenced
+                                    ? 'Stop'
+                                    : 'Start'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              ref
+                                  .read(sessionStateNotifierProvider.notifier)
+                                  .endSession();
+                            },
+                            child: Text('End'),
+                          ),
+                        ])
                   ],
                 ))));
   }
