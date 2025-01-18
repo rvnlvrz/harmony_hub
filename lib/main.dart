@@ -1,11 +1,14 @@
+import 'package:animations/animations.dart';
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:auth0_flutter/auth0_flutter.dart';
-import 'package:harmony_hub/profile_view.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harmony_hub/attendance.dart';
+import 'package:harmony_hub/dashboard.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,12 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Harmony Hub',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF5946D2)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Harmony Hub'),
     );
   }
 }
@@ -73,20 +76,20 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: context.colors.scheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              ProfileView(
-                credentials: _credentials,
-                onPrimaryAction: doSomething,
-                primaryActionText: _credentials == null ? 'Log in' : 'Log out',
-              )
-            ],
-          ),
-        ),
+      body: PageTransitionSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (Widget child, Animation<double> primaryAnimation,
+            Animation<double> secondaryAnimation) {
+          return SharedAxisTransition(
+            animation: primaryAnimation,
+            secondaryAnimation: secondaryAnimation,
+            transitionType: SharedAxisTransitionType.horizontal,
+            child: child,
+          );
+        },
+        child: _selectedIndex == 0
+            ? Dashboard(key: ValueKey(0), credentials: _credentials)
+            : Attendance(key: ValueKey(1)),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _startSession,
@@ -96,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<void> doSomething() async {
+  Future<void> handleAuthAction() async {
     if (_credentials == null) {
       return loginAsync();
     } else {

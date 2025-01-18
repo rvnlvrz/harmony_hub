@@ -30,7 +30,10 @@ jobs:
         run: dart format --output=none --set-exit-if-changed .
 
       - name: Analyze project source
-        run: dart analyze
+        run: dart analyze --fatal-infos --fatal-warnings
+
+      - name: Run custom lint
+        run: dart run custom_lint
 
       - name: Run tests
         run: flutter test
