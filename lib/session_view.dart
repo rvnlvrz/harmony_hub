@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/session_state.dart';
@@ -22,6 +23,7 @@ class _SessionViewState extends ConsumerState<SessionView> {
   @override
   void initState() {
     super.initState();
+    _elapsedTime = ref.read(sessionStateNotifierProvider).elapsedTime;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         _elapsedTime = ref.read(sessionStateNotifierProvider).elapsedTime;
@@ -37,6 +39,9 @@ class _SessionViewState extends ConsumerState<SessionView> {
 
   @override
   Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print('Redrawing session view');
+    }
     final sessionState = ref.watch(sessionStateNotifierProvider);
     if (sessionState.status == SessionStatus.commenced) {
       _elapsedTime = _elapsedTime +
