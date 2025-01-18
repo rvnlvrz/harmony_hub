@@ -43,6 +43,8 @@ class _SessionViewState extends ConsumerState<SessionView> {
       print('Redrawing session view');
     }
     final sessionState = ref.watch(sessionStateNotifierProvider);
+    final sessionStateNotifier =
+        ref.read(sessionStateNotifierProvider.notifier);
     if (sessionState.status == SessionStatus.commenced) {
       _elapsedTime = _elapsedTime +
           DateTime.now()
@@ -114,35 +116,33 @@ class _SessionViewState extends ConsumerState<SessionView> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         spacing: 8.0,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              if (sessionState.status == SessionStatus.paused) {
-                                ref
-                                    .read(sessionStateNotifierProvider.notifier)
-                                    .resumeSession();
-                              } else if (sessionState.status ==
-                                  SessionStatus.commenced) {
-                                ref
-                                    .read(sessionStateNotifierProvider.notifier)
-                                    .pauseSession();
-                              } else {
-                                ref
-                                    .read(sessionStateNotifierProvider.notifier)
-                                    .startSession();
-                              }
-                            },
-                            child: Text(
-                                sessionState.status == SessionStatus.commenced
-                                    ? 'Stop'
-                                    : 'Start'),
-                          ),
-                          ElevatedButton(
+                          FilledButton.tonal(
                             onPressed: () {
                               ref
                                   .read(sessionStateNotifierProvider.notifier)
                                   .endSession();
                             },
-                            child: Text('End'),
+                            child: Text('End',
+                                style: kListItemButtonLabelStyle.copyWith(
+                                  color: context.colors.scheme.primary,
+                                  fontSize:
+                                      context.textStyles.labelLarge.fontSize,
+                                )),
+                          ),
+                          FilledButton(
+                            onPressed: () {
+                              onPrimaryButtonPressed(
+                                  context, sessionState, sessionStateNotifier);
+                            },
+                            child: Text(
+                                sessionState.status == SessionStatus.commenced
+                                    ? 'Stop'
+                                    : 'Start',
+                                style: kListItemButtonLabelStyle.copyWith(
+                                  color: context.colors.scheme.onInverseSurface,
+                                  fontSize:
+                                      context.textStyles.labelLarge.fontSize,
+                                )),
                           ),
                         ])
                   ],
@@ -154,5 +154,16 @@ class _SessionViewState extends ConsumerState<SessionView> {
     String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
     return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+  }
+
+  void onPrimaryButtonPressed(BuildContext context, SessionState sessionState,
+      SessionStateNotifier sessionStateNotifier) {
+    if (sessionState.status == SessionStatus.paused) {
+      sessionStateNotifier.resumeSession();
+    } else if (sessionState.status == SessionStatus.commenced) {
+      sessionStateNotifier.pauseSession();
+    } else {
+      sessionStateNotifier.startSession();
+    }
   }
 }

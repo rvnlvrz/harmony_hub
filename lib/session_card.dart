@@ -50,7 +50,7 @@ class SessionCard extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       spacing: 8.0,
                       children: [
-                        OutlinedButton(
+                        FilledButton.tonal(
                             onPressed: () {},
                             child: Text(
                               'Past Sessions',
