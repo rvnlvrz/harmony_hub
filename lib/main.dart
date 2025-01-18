@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               ProfileCard(
                 credentials: _credentials,
-                onPrimaryAction: doSomething,
+                onPrimaryAction: handleAuthAction,
                 primaryActionText: _credentials == null ? 'Log in' : 'Log out',
               ),
               SessionView(),
@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<void> doSomething() async {
+  Future<void> handleAuthAction() async {
     if (_credentials == null) {
       return loginAsync();
     } else {
