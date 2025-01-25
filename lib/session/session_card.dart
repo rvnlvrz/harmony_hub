@@ -1,7 +1,7 @@
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harmony_hub/session_state.dart';
+import 'package:harmony_hub/session/session_state.dart';
 import 'package:harmony_hub/styles/styles.dart';
 
 class SessionCard extends ConsumerWidget {

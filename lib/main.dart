@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harmony_hub/attendance.dart';
+import 'package:harmony_hub/attendance/attendance.dart';
 import 'package:harmony_hub/dashboard.dart';
 
 void main() {

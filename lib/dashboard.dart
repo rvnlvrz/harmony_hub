@@ -1,7 +1,7 @@
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:harmony_hub/profile_card.dart';
-import 'package:harmony_hub/session_card.dart';
+import 'package:harmony_hub/session/session_card.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({

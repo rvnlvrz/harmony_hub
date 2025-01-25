@@ -3,7 +3,7 @@ import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harmony_hub/session_state.dart';
+import 'package:harmony_hub/session/session_state.dart';
 import 'package:harmony_hub/styles/styles.dart';
 import 'package:intl/intl.dart';
 
@@ -79,11 +79,9 @@ class _SessionViewState extends ConsumerState<SessionView> {
                         Text(
                           sessionState.status.name,
                           style: kListItemSubtitleStyle.copyWith(
-                            color: (sessionState.status ==
-                                        SessionStatus.commenced ||
-                                    sessionState.status == SessionStatus.ready)
+                            color: (shouldStatusLabelBeGreen(sessionState))
                                 ? Colors.green
-                                : sessionState.status == SessionStatus.paused
+                                : shouldStatusLabelBeOrange(sessionState)
                                     ? Colors.orange
                                     : Colors.red,
                             fontSize: context.textStyles.bodyMedium.fontSize,
@@ -117,11 +115,14 @@ class _SessionViewState extends ConsumerState<SessionView> {
                         spacing: 8.0,
                         children: [
                           FilledButton.tonal(
-                            onPressed: () {
-                              ref
-                                  .read(sessionStateNotifierProvider.notifier)
-                                  .endSession();
-                            },
+                            onPressed: (shouldEndButtonBeDisabled(sessionState))
+                                ? null
+                                : () {
+                                    ref
+                                        .read(sessionStateNotifierProvider
+                                            .notifier)
+                                        .endSession();
+                                  },
                             child: Text('End',
                                 style: kListItemButtonLabelStyle.copyWith(
                                   color: context.colors.scheme.primary,
@@ -149,6 +150,19 @@ class _SessionViewState extends ConsumerState<SessionView> {
                 ))));
   }
 
+  bool shouldStatusLabelBeOrange(SessionState sessionState) =>
+      sessionState.status == SessionStatus.paused;
+
+  bool shouldStatusLabelBeGreen(SessionState sessionState) {
+    return sessionState.status == SessionStatus.commenced ||
+        sessionState.status == SessionStatus.ready;
+  }
+
+  bool shouldEndButtonBeDisabled(SessionState sessionState) {
+    return sessionState.status == SessionStatus.ended ||
+        sessionState.status == SessionStatus.ready;
+  }
+
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
@@ -158,7 +172,7 @@ class _SessionViewState extends ConsumerState<SessionView> {
 
   void onPrimaryButtonPressed(BuildContext context, SessionState sessionState,
       SessionStateNotifier sessionStateNotifier) {
-    if (sessionState.status == SessionStatus.paused) {
+    if (shouldStatusLabelBeOrange(sessionState)) {
       sessionStateNotifier.resumeSession();
     } else if (sessionState.status == SessionStatus.commenced) {
       sessionStateNotifier.pauseSession();
