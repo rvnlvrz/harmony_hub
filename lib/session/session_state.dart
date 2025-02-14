@@ -71,10 +71,6 @@ class SessionStateNotifier extends StateNotifier<SessionState> {
   }
 }
 
-final sessionStartTimeProvider = Provider<DateTime>((ref) {
-  return DateTime.now();
-});
-
 final sessionStateNotifierProvider =
     StateNotifierProvider<SessionStateNotifier, SessionState>((ref) {
   return SessionStateNotifier();

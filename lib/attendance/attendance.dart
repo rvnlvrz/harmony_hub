@@ -1,14 +1,23 @@
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/session/session_view.dart';
+import 'package:harmony_hub/shared/infrastructure/dto/people.dart';
 
-class Attendance extends StatelessWidget {
+class Attendance extends ConsumerWidget {
   const Attendance({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AsyncValue<People> members = ref.watch(membersProvider);
+
+    if (kDebugMode) {
+      print('Members Count: ${members.value?.included.length}');
+    }
+
     return Center(
         child: Container(
       padding: const EdgeInsets.all(8),

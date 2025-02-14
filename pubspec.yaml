@@ -42,6 +42,7 @@ dependencies:
   freezed: ^2.5.8
   freezed_annotation: ^2.4.4
   animations: ^2.0.11
+  http: ^1.3.0
 
 dev_dependencies:
   flutter_test:
