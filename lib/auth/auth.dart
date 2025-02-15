@@ -10,6 +10,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
 
   final Ref ref;
   final scheme = 'harmonyhub';
+  final audience = 'https://dev.harmonyhub.com/api/';
 
   Future<void> login() async {
     try {
@@ -19,7 +20,9 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
 
       final credentials = hasValidCreds
           ? await auth0.credentialsManager.credentials()
-          : await auth0.webAuthentication(scheme: scheme).login(useHTTPS: true);
+          : await auth0
+              .webAuthentication(scheme: scheme)
+              .login(useHTTPS: true, audience: audience);
 
       state = state.copyWith(credentials: credentials, isAuthenticated: true);
     } catch (e) {

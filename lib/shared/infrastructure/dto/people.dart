@@ -18,16 +18,32 @@ String peopleToJson(People data) => json.encode(data.toJson());
 
 @riverpod
 Future<People> members(Ref ref) async {
-  var pcoSecret = await getSecretAsync(ref, "PCO-ApiKey", "latest");
+  var apiKey = (await getSecretAsync(ref, "PCO-ApiKey", "latest")).value;
 
-  final response = await http.get(
-      Uri.parse(
-          'https://api.planningcenteronline.com/people/v2/lists/3971241?include=people'),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer ${pcoSecret.value}'});
+  final clientId =
+      'a61c5a19d3b4f1a4ae8ba73f41492d339c4dcdfa2e6957d3b5de0ae243b5eede';
+
+  final queryParameters = {
+    'include': 'people',
+  };
+
+  final uri =
+      Uri.parse('https://api.planningcenteronline.com/people/v2/lists/3971241')
+          .replace(queryParameters: queryParameters);
+
+  final basicAuth = getBasicAuth(clientId, apiKey);
+
+  final response = await http
+      .get(uri, headers: {HttpHeaders.authorizationHeader: basicAuth});
 
   final json = jsonDecode(response.body) as Map<String, dynamic>;
 
   return People.fromJson(json);
+}
+
+String getBasicAuth(String username, String password) {
+  final basicAuth = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+  return basicAuth;
 }
 
 class People {

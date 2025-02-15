@@ -19,10 +19,11 @@ class AttendanceFilterChip extends ConsumerWidget {
           label: Text('Ready'),
           selected: attendanceState.filters.contains(AttendanceFilter.ready),
           onSelected: (bool selected) {
+            final filter = AttendanceFilter.ready;
             if (selected) {
-              attendanceStateNotifier.addFilter(AttendanceFilter.ready);
+              attendanceStateNotifier.addFilter(filter);
             } else {
-              attendanceStateNotifier.removeFilter(AttendanceFilter.ready);
+              attendanceStateNotifier.removeFilter(filter);
             }
           },
         ),
@@ -30,10 +31,11 @@ class AttendanceFilterChip extends ConsumerWidget {
           label: Text('Present'),
           selected: attendanceState.filters.contains(AttendanceFilter.present),
           onSelected: (bool selected) {
+            final filter = AttendanceFilter.present;
             if (selected) {
-              attendanceStateNotifier.addFilter(AttendanceFilter.present);
+              attendanceStateNotifier.addFilter(filter);
             } else {
-              attendanceStateNotifier.removeFilter(AttendanceFilter.present);
+              attendanceStateNotifier.removeFilter(filter);
             }
           },
         ),
@@ -42,12 +44,14 @@ class AttendanceFilterChip extends ConsumerWidget {
           selected: attendanceState.filters.contains(AttendanceFilter.absent) ||
               attendanceState.filters.contains(AttendanceFilter.absentExcused),
           onSelected: (bool selected) {
+            final filters = {
+              AttendanceFilter.absent,
+              AttendanceFilter.absentExcused
+            };
             if (selected) {
-              attendanceStateNotifier.addFilters(
-                  {AttendanceFilter.absent, AttendanceFilter.absentExcused});
+              attendanceStateNotifier.addFilters(filters);
             } else {
-              attendanceStateNotifier.removeFilters(
-                  {AttendanceFilter.absent, AttendanceFilter.absentExcused});
+              attendanceStateNotifier.removeFilters(filters);
             }
           },
         ),
@@ -56,12 +60,14 @@ class AttendanceFilterChip extends ConsumerWidget {
           selected: attendanceState.filters.contains(AttendanceFilter.late) ||
               attendanceState.filters.contains(AttendanceFilter.lateExcused),
           onSelected: (bool selected) {
+            final filters = {
+              AttendanceFilter.late,
+              AttendanceFilter.lateExcused
+            };
             if (selected) {
-              attendanceStateNotifier.addFilters(
-                  {AttendanceFilter.late, AttendanceFilter.lateExcused});
+              attendanceStateNotifier.addFilters(filters);
             } else {
-              attendanceStateNotifier.removeFilters(
-                  {AttendanceFilter.late, AttendanceFilter.lateExcused});
+              attendanceStateNotifier.removeFilters(filters);
             }
           },
         ),

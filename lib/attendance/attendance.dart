@@ -2,7 +2,9 @@ import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/attendance/attendance_filter_chip.dart';
+// import 'package:harmony_hub/attendance/attendance_state.dart';
 import 'package:harmony_hub/session/session_view.dart';
+import 'package:harmony_hub/shared/infrastructure/dto/people.dart';
 
 // import 'package:harmony_hub/shared/infrastructure/dto/people.dart';
 
@@ -13,10 +15,10 @@ class Attendance extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final AsyncValue<People> members = ref.watch(membersProvider);
+    final AsyncValue<People> members = ref.watch(membersProvider);
     // final attendanceStateNotifier =
     //     ref.read(attendanceStateNotifierProvider.notifier);
-    //
+
     // final attendanceState = ref.watch(attendanceStateNotifierProvider);
 
     return Center(
@@ -57,8 +59,15 @@ class Attendance extends ConsumerWidget {
                     );
                   });
                 }),
-            // create choice chip between ready, present, absent, and late
             AttendanceFilterChip(),
+            Center(
+              child: switch (members) {
+                AsyncData(:final value) => Text('Activity: ${value.included}'),
+                AsyncError() =>
+                  const Text('Oops, something unexpected happened'),
+                _ => const CircularProgressIndicator(),
+              },
+            )
           ]),
     ));
   }
