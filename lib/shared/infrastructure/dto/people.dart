@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 import 'dart:io';
-// import 'package:harmony_hub/shared/secrets.dart';
+import 'package:harmony_hub/shared/secrets.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,12 +18,12 @@ String peopleToJson(People data) => json.encode(data.toJson());
 
 @riverpod
 Future<People> members(Ref ref) async {
-// getSecretAsync(ref, secretName, secretVersion)
+  var pcoSecret = await getSecretAsync(ref, "PCO-ApiKey", "latest");
 
   final response = await http.get(
       Uri.parse(
           'https://api.planningcenteronline.com/people/v2/lists/3971241?include=people'),
-      headers: {HttpHeaders.authorizationHeader: 'Bearer empty'});
+      headers: {HttpHeaders.authorizationHeader: 'Bearer ${pcoSecret.value}'});
 
   final json = jsonDecode(response.body) as Map<String, dynamic>;
 

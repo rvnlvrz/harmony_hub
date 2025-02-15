@@ -1,9 +1,8 @@
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/session/session_view.dart';
-import 'package:harmony_hub/shared/infrastructure/dto/people.dart';
+// import 'package:harmony_hub/shared/infrastructure/dto/people.dart';
 
 class Attendance extends ConsumerWidget {
   const Attendance({
@@ -12,11 +11,7 @@ class Attendance extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<People> members = ref.watch(membersProvider);
-
-    if (kDebugMode) {
-      print('Members Count: ${members.value?.included.length}');
-    }
+    // final AsyncValue<People> members = ref.watch(membersProvider);
 
     return Center(
         child: Container(
@@ -53,7 +48,18 @@ class Attendance extends ConsumerWidget {
                     );
                   });
                 }),
-            SessionView()
+            SessionView(),
+            // create choice chip between ready, present, absent, and late
+            Wrap(
+              spacing: 5.0,
+              children: List<Widget>.generate(3, (int index) {
+                return FilterChip(
+                  label: Text('Item $index'),
+                  selected: false,
+                  onSelected: (bool selected) {},
+                );
+              }).toList(),
+            ),
           ]),
     ));
   }

@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         },
         child: _selectedIndex == 0
-            ? Dashboard(key: ValueKey(0), credentials: _credentials)
+            ? Dashboard(key: ValueKey(0))
             : Attendance(key: ValueKey(1)),
       ),
       floatingActionButton: FloatingActionButton(

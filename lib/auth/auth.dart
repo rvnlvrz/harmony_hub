@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/auth/auth_state.dart';
+
 import 'auth_provider.dart';
 
 class AuthStateNotifier extends StateNotifier<AuthState> {
@@ -23,6 +24,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(credentials: credentials, isAuthenticated: true);
     } catch (e) {
       state = state.copyWith(error: e.toString());
+      await logout();
     }
   }
 
