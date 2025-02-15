@@ -3,8 +3,8 @@ import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:harmony_hub/styles/styles.dart';
 
-class ProfileView extends StatelessWidget {
-  const ProfileView(
+class ProfileCard extends StatelessWidget {
+  const ProfileCard(
       {super.key,
       required this.credentials,
       required this.onPrimaryAction,
